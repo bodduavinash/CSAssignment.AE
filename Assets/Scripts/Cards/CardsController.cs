@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CardsController : SingletonWithMonobehaviour<CardsController>
 {
@@ -13,7 +12,7 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
     [SerializeField] private List<Sprite> _fruitsAndVeggiesSpritesList;
     [SerializeField] private List<CardLayoutObject> _cardLayoutGameObjects;
 
-    [SerializeField] private CardLayoutsEnum _currentLayoutSelected = CardLayoutsEnum.Layout2x2;
+    private CardLayoutsEnum _currentLayoutSelected;
 
     private List<GameObject> _spawnedCardsInLayout = new List<GameObject>();
     private List<Sprite> _finalSelectedSprites = new List<Sprite>();
@@ -24,8 +23,16 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
     private readonly int CARD_MATCHED = 1;
     private readonly float SECONDS_TO_WAIT = 0.2f;
 
+    private UIManager _uiManager;
+    private GameSceneManager _gameSceneManager;
+
     private void Start()
     {
+        _uiManager = (UIManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.UIManager);
+        _gameSceneManager = (GameSceneManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.GameSceneManager);
+
+        _currentLayoutSelected = _uiManager.CurrentLayoutEnumSelected;
+
         PopulateCards();
     }
 
@@ -112,11 +119,12 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
         {
             yield return new WaitForSeconds(SECONDS_TO_WAIT);
 
-            for (int i = 0; i < 2; i++)
-            {
-                _matchedCardList[i] = CARD_MATCHED;
-                _cardClickedList[i].EnableChildGameObjects(false);
-            }
+            _cardClickedList.ForEach(_co => {
+                _co.EnableChildGameObjects(false);
+
+                int index = int.Parse(_co.gameObject.name.Split('_')[1]);
+                _matchedCardList[index] = CARD_MATCHED;
+            });
         }
         else
         {
@@ -129,7 +137,17 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
         }
 
         _cardClickedList.Clear();
+        CheckIfAllCardsAreMatched();
+
         StopCoroutine(CheckIfCardsMatchingEnumerator());
         yield return null;
+    }
+
+    private void CheckIfAllCardsAreMatched()
+    {
+        if(_matchedCardList.TrueForAll(value => value == CARD_MATCHED))
+        {
+            _gameSceneManager.LoadScene(GameScenesEnum.GameOverScene, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+        }
     }
 }

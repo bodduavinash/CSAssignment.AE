@@ -12,3 +12,19 @@ public enum CardLayoutsEnum
     Layout4x4,
     Layout5x6
 }
+
+public enum DontDestroyOnLoadEnums
+{
+    None,
+    GameSceneManager,
+    UIManager,
+    DataPersistenceManager
+}
+
+public enum GameScenesEnum
+{
+    MainMenuScene,
+    LayoutMenuScene,
+    GameScene,
+    GameOverScene
+}
