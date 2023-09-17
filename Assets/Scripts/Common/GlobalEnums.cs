@@ -28,3 +28,12 @@ public enum GameScenesEnum
     GameScene,
     GameOverScene
 }
+
+public enum GameAudioClipsEnum
+{
+    None,
+    ButtonClick,
+    CardMatchError,
+    CardMatched,
+    GameOver
+}

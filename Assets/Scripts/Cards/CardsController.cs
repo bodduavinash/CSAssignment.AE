@@ -32,13 +32,15 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
     private GameSceneManager _gameSceneManager;
     private GameScoreManager _gameScoreManager;
     private DataPersistenceManager _dataPersistenceManager;
+    private AudioManager _audioManager;
 
     private void Start()
     {
         _uiManager = (UIManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.UIManager);
         _gameSceneManager = (GameSceneManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.GameSceneManager);
-        _gameScoreManager = GameScoreManager.Instance;
         _dataPersistenceManager = (DataPersistenceManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.DataPersistenceManager);
+        _gameScoreManager = GameScoreManager.Instance;
+        _audioManager = AudioManager.Instance;
 
         _currentLayoutSelected = _uiManager.CurrentLayoutEnumSelected;
 
@@ -160,6 +162,8 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
             _gameScoreManager.UpdateMatchedScore(ADD_SCORE);
             _gameScoreManager.UpdateTurnsScore(ADD_SCORE);
 
+            _audioManager.PlaySound(GameAudioClipsEnum.CardMatched);
+
             _cardClickedList.ForEach(_co => {
                 _co.EnableChildGameObjects(false);
 
@@ -172,6 +176,8 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
             yield return new WaitForSeconds(SECONDS_TO_WAIT);
 
             _gameScoreManager.UpdateTurnsScore(ADD_SCORE);
+
+            _audioManager.PlaySound(GameAudioClipsEnum.CardMatchError);
 
             _cardClickedList.ForEach(_co => {
                 _co.FlipCard(false);
@@ -190,6 +196,7 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
         if(_matchedCardList.TrueForAll(value => value == CARD_MATCHED))
         {
             _dataPersistenceManager.SaveGameData();
+            _audioManager.PlaySound(GameAudioClipsEnum.GameOver);
             _gameSceneManager.LoadScene(GameScenesEnum.GameOverScene, UnityEngine.SceneManagement.LoadSceneMode.Additive);
         }
     }
