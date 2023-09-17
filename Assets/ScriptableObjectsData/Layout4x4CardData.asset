@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Layout4x4CardData
   m_EditorClassIdentifier: 
   _noOfCardsInLayout: 16
-  _cardSpriteScaleSize: 1
+  _cardSpriteScaleSize: 2.25

@@ -465,6 +465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94972af2760642f498fb4a259377069a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noOfTurnsValueText: {fileID: 1741060929}
+  noOfMatchedValueText: {fileID: 800352073}
 --- !u!4 &399455704
 Transform:
   m_ObjectHideFlags: 0
@@ -1253,7 +1255,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 100, y: 100}
+  m_Spacing: {x: 75, y: 75}
   m_Constraint: 1
   m_ConstraintCount: 6
 --- !u!1 &1136962586
@@ -1816,6 +1818,6 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 150, y: 150}
+  m_Spacing: {x: 125, y: 125}
   m_Constraint: 1
   m_ConstraintCount: 4

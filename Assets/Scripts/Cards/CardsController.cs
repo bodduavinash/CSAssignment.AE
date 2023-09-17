@@ -21,15 +21,18 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
 
     private readonly int CARD_NOT_MATCHED = 0;
     private readonly int CARD_MATCHED = 1;
+    private readonly int ADD_SCORE = 1;
     private readonly float SECONDS_TO_WAIT = 0.2f;
 
     private UIManager _uiManager;
     private GameSceneManager _gameSceneManager;
+    private GameScoreManager _gameScoreManager;
 
     private void Start()
     {
         _uiManager = (UIManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.UIManager);
         _gameSceneManager = (GameSceneManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.GameSceneManager);
+        _gameScoreManager = GameScoreManager.Instance;
 
         _currentLayoutSelected = _uiManager.CurrentLayoutEnumSelected;
 
@@ -38,6 +41,7 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
 
     private void PopulateCards()
     {
+        _gameScoreManager.ResetScores();
         InstantiateCardsInLayout();
         _finalSelectedSprites = GenerateAndRandomizeCardsInLayout();
         ApplyPropsToCardObject();
@@ -119,6 +123,9 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
         {
             yield return new WaitForSeconds(SECONDS_TO_WAIT);
 
+            _gameScoreManager.UpdateMatchedScore(ADD_SCORE);
+            _gameScoreManager.UpdateTurnsScore(ADD_SCORE);
+
             _cardClickedList.ForEach(_co => {
                 _co.EnableChildGameObjects(false);
 
@@ -128,8 +135,9 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>
         }
         else
         {
-            //yield return new WaitUntil( () => !_cardClickedList.TrueForAll(_card => _card.IsCardAnimating()));
             yield return new WaitForSeconds(SECONDS_TO_WAIT);
+
+            _gameScoreManager.UpdateTurnsScore(ADD_SCORE);
 
             _cardClickedList.ForEach(_co => {
                 _co.FlipCard(false);

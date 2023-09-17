@@ -12,23 +12,13 @@ public class GameScoreManager : SingletonWithMonobehaviour<GameScoreManager>
     public void UpdateTurnsScore(int score)
     {
         noOfTurns += score;
-        noOfTurnsValueText.text = score.ToString();
+        noOfTurnsValueText.text = noOfTurns.ToString();
     }
 
     public void UpdateMatchedScore(int matched)
     {
         noOfMatched += matched;
-        noOfMatchedValueText.text = matched.ToString();
-    }
-
-    public int GetNoOfTurnsScore()
-    {
-        return noOfTurns;
-    }
-
-    public int GetNoOfMatchedScore()
-    {
-        return noOfMatched;
+        noOfMatchedValueText.text = noOfMatched.ToString();
     }
 
     public void ResetScores()
