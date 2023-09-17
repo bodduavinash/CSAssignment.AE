@@ -18,6 +18,7 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
 
     private List<GameObject> _spawnedCardsInLayout = new List<GameObject>();
     private List<Sprite> _finalSelectedSprites = new List<Sprite>();
+    private List<string> _layoutSpritesList = new List<string>();
     private List<CardObjectProps> _cardClickedList = new List<CardObjectProps>(2);
     private List<int> _matchedCardList = new List<int>();
 
@@ -54,7 +55,7 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
         UpdateGameScore();
         InstantiateCardsInLayout();
         InitCardsMatchedList();
-        _finalSelectedSprites = _dataPersistenceManager.IsGameDataLoaded() ? _finalSelectedSprites : GenerateAndRandomizeCardsInLayout();
+        _finalSelectedSprites = _dataPersistenceManager.IsGameDataLoaded() ? GenerateSpriteListFromSavedGameData() : GenerateAndRandomizeCardsInLayout();
         ApplyPropsToCardObject();
     }
 
@@ -85,6 +86,19 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
                 _matchedCardList.Add(CARD_NOT_MATCHED);
             }
         }
+    }
+
+    private List<Sprite> GenerateSpriteListFromSavedGameData()
+    {
+        List<Sprite> _generatedSpritesList = new List<Sprite>();
+
+        for(int i = 0; i < _layoutSpritesList.Count; i++)
+        {
+            var sprite = _fruitsAndVeggiesSpritesList.Find(sp => sp.name == _layoutSpritesList[i]);
+            _generatedSpritesList.Add(sprite);
+        }
+
+        return _generatedSpritesList;
     }
 
     private void InstantiateCardsInLayout()
@@ -213,7 +227,7 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
             _uiManager.CurrentLayoutEnumSelected = gameData.currentLayout;
         }
 
-        _finalSelectedSprites = gameData.finalSelectedList;
+        _layoutSpritesList = gameData.layoutSpritesList;
         _matchedCardList = gameData.matchedCardList;
 
         _isGameLoaded = true;
@@ -222,7 +236,9 @@ public class CardsController : SingletonWithMonobehaviour<CardsController>, IGam
     public void SaveGameData(ref GameData gameData)
     {
         gameData.currentLayout = _uiManager.CurrentLayoutEnumSelected;
-        gameData.finalSelectedList = _finalSelectedSprites;
         gameData.matchedCardList = _matchedCardList;
+
+        _finalSelectedSprites.ForEach( sp => _layoutSpritesList.Add(sp.name));
+        gameData.layoutSpritesList = _layoutSpritesList;
     }
 }

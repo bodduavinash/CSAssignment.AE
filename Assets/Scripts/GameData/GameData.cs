@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameData
 {
     public CardLayoutsEnum currentLayout;
-    public List<Sprite> finalSelectedList;
+    public List<string> layoutSpritesList;
     public List<int> matchedCardList;
 
     public int noOfTurns;

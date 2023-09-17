@@ -81,7 +81,7 @@ public class DataPersistenceManager : SingletonWithMonobehaviour<DataPersistence
     {
         return _gameData != null &&
             _gameData.currentLayout != CardLayoutsEnum.None &&
-            _gameData.finalSelectedList.Count > 0 &&
+            _gameData.layoutSpritesList.Count > 0 &&
             _gameData.matchedCardList.Count > 0;
     }
 
