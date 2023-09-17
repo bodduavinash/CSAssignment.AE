@@ -9,6 +9,7 @@ public class LayoutMenuButtonController : MonoBehaviour
 
     private GameSceneManager _gameSceneManager;
     private UIManager _uiManager;
+    private DataPersistenceManager _dataPersistenceManager;
 
     private void Start()
     {
@@ -16,10 +17,13 @@ public class LayoutMenuButtonController : MonoBehaviour
 
         _gameSceneManager = (GameSceneManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.GameSceneManager);
         _uiManager = (UIManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.UIManager);
+        _dataPersistenceManager = (DataPersistenceManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.DataPersistenceManager);
     }
 
     private void OnLayoutButtonClicked()
     {
+        _dataPersistenceManager.ResetGameData();
+
         _uiManager.CurrentLayoutEnumSelected = selectedGameLayout;
         _gameSceneManager.LoadNextScene();
     }

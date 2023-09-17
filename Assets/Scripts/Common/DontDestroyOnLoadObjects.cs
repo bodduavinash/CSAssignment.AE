@@ -13,8 +13,20 @@ public class DontDestroyOnLoadObjects : SingletonWithMonobehaviour<DontDestroyOn
 
     private void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
 
+        PopulateUndestroyedList();
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
         PopulateUndestroyedList();
     }
 

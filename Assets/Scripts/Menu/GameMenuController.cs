@@ -1,18 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMenuController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Button homeButton;
+    [SerializeField] private Button saveButton;
+
+    private GameSceneManager _gameSceneManager;
+    private DataPersistenceManager _dataPersistenceManager;
+
+    private void Start()
     {
-        
+        _gameSceneManager = (GameSceneManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.GameSceneManager);
+        _dataPersistenceManager = (DataPersistenceManager)DontDestroyOnLoadObjects.Instance.GetObjectFromDict(DontDestroyOnLoadEnums.DataPersistenceManager);
+
+        homeButton.onClick.AddListener(OnHomeButtonClicked);
+        saveButton.onClick.AddListener(onSaveButtonClicked);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnHomeButtonClicked()
     {
-        
+        _gameSceneManager.LoadScene(GameScenesEnum.LayoutMenuScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
+    }
+
+    private void onSaveButtonClicked()
+    {
+        _dataPersistenceManager.SaveGameData();
     }
 }

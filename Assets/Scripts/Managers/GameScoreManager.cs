@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class GameScoreManager : SingletonWithMonobehaviour<GameScoreManager>
+public class GameScoreManager : SingletonWithMonobehaviour<GameScoreManager>, IGameDataPersistence
 {
     [SerializeField] private TextMeshProUGUI noOfTurnsValueText;
     [SerializeField] private TextMeshProUGUI noOfMatchedValueText;
@@ -25,5 +25,20 @@ public class GameScoreManager : SingletonWithMonobehaviour<GameScoreManager>
     {
         noOfTurns = 0;
         noOfMatched = 0;
+    }
+
+    public void LoadGameData(GameData gameData)
+    {
+        noOfTurns = gameData.noOfTurns;
+        noOfMatched = gameData.noOfMatched;
+
+        noOfTurnsValueText.text = noOfTurns.ToString();
+        noOfMatchedValueText.text = noOfMatched.ToString();
+    }
+
+    public void SaveGameData(ref GameData gameData)
+    {
+        gameData.noOfTurns = noOfTurns;
+        gameData.noOfMatched = noOfMatched;
     }
 }
