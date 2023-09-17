@@ -5,7 +5,10 @@ public class GameSceneManager : SingletonWithMonobehaviour<GameSceneManager>
 {
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (FindObjectOfType<GameSceneManager>().gameObject.scene.name.CompareTo(DontDestroyOnLoadObjects.DONT_DESTROY_ON_LOAD) == 1)
+        {
+            DontDestroyOnLoad(this);
+        }
     }
 
     public void LoadNextScene()

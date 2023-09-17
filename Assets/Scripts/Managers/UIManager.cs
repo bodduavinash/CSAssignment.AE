@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class UIManager : SingletonWithMonobehaviour<UIManager>
 {
-    private CardLayoutsEnum layoutSelected = CardLayoutsEnum.None;
-
     public CardLayoutsEnum CurrentLayoutEnumSelected { set => layoutSelected = value; get => layoutSelected; }
 
+    private CardLayoutsEnum layoutSelected = CardLayoutsEnum.None;
+    
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (FindObjectOfType<UIManager>().gameObject.scene.name.CompareTo(DontDestroyOnLoadObjects.DONT_DESTROY_ON_LOAD) == 1)
+        {
+            DontDestroyOnLoad(this);
+        }
     }
 }

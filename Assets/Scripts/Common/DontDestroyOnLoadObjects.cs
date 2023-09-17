@@ -9,6 +9,8 @@ public class DontDestroyOnLoadObjects : SingletonWithMonobehaviour<DontDestroyOn
 
     private Dictionary<DontDestroyOnLoadEnums, Object> DictOfGameObjects = new Dictionary<DontDestroyOnLoadEnums, Object>();
 
+    public readonly static string DONT_DESTROY_ON_LOAD = "DontDestroyOnLoad";
+
     private void Start()
     {
         SceneManager.sceneUnloaded += OnSceneUnloaded;
